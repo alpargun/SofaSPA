@@ -1,0 +1,1 @@
+./bin/runSofa example.py
