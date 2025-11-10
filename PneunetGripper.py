@@ -2,7 +2,10 @@ import Sofa
 import math
 import os
 from MyController import EmptyController
+from wholeGripperController import WholeGripperController
 
+import Sofa.Core
+from Sofa.constants import *
 
 youngModulusFingers = 500
 youngModulusStiffLayerFingers = 1500
@@ -59,8 +62,8 @@ def createScene(rootNode):
 
     rootNode.addObject('BackgroundSetting', color='0 0.168627 0.211765')
     rootNode.addObject('OglSceneFrame', style='Arrows', alignment='TopRight')
-    #rootNode.addObject('PythonScriptController', filename='pythonControllers/wholeGripperController.py', classname='controller') $ doesn't work
-    rootNode.addObject( EmptyController() )
+    #rootNode.addObject('PythonScriptController', filename='wholeGripperController.py', classname='controller') # doesn't work
+    #rootNode.addObject( EmptyController() )    
 
     planeNode = rootNode.addChild('Plane')
     planeNode.addObject('MeshOBJLoader', name='loader', filename='mesh/floorFlat.obj', triangulate=True, rotation=[0, 0, 270], scale=10, translation=[-122, 0, 0])
@@ -146,7 +149,7 @@ def createScene(rootNode):
         # Constraint							 #
         ##########################################
         cavity = finger.addChild('cavity')
-        cavity.addObject('MeshSTLLoader', name='loader', filename='/Users/alp/Downloads/$RECYCLE.BIN/$RKJOUDW/SoftRobots_master_for-SOFA-master_Windows/share/sofa/examples/SoftRobots/tutorials/PneunetGripper/details/data/mesh/pneunetCavityCut.stl',translation = translations[i], rotation=[360 - angles[i]*180/math.pi, 0, 0])
+        cavity.addObject('MeshSTLLoader', name='loader', filename='/Users/alp/Desktop/SoftRobots/SOFA_v23.06.00_MacOS/plugins/SoftRobots/share/sofa/examples/SoftRobots/tutorials/PneunetGripper/details/data/mesh/pneunetCavityCut.stl',translation = translations[i], rotation=[360 - angles[i]*180/math.pi, 0, 0])
         cavity.addObject('MeshTopology', src='@loader', name='topo')
         cavity.addObject('MechanicalObject', name='cavity')
         cavity.addObject('SurfacePressureConstraint', name='SurfacePressureConstraint', template='Vec3', value=0.0001, triangles='@topo.triangles', valueType='pressure')
@@ -157,7 +160,7 @@ def createScene(rootNode):
         ##########################################
 
         collisionFinger = finger.addChild('collisionFinger')
-        collisionFinger.addObject('MeshSTLLoader', name='loader', filename='/Users/alp/Downloads/$RECYCLE.BIN/$RKJOUDW/SoftRobots_master_for-SOFA-master_Windows/share/sofa/examples/SoftRobots/tutorials/PneunetGripper/details/data/mesh/pneunetCut.stl', translation = translations[i], rotation=[360 - angles[i]*180/math.pi, 0, 0])
+        collisionFinger.addObject('MeshSTLLoader', name='loader', filename='/Users/alp/Desktop/SoftRobots/SOFA_v23.06.00_MacOS/plugins/SoftRobots/share/sofa/examples/SoftRobots/tutorials/PneunetGripper/details/data/mesh/pneunetCut.stl', translation = translations[i], rotation=[360 - angles[i]*180/math.pi, 0, 0])
         collisionFinger.addObject('MeshTopology', src='@loader', name='topo')
         collisionFinger.addObject('MechanicalObject', name='collisMech')
         collisionFinger.addObject('TriangleCollisionModel', selfCollision=False)
@@ -170,8 +173,11 @@ def createScene(rootNode):
         # Visualization						  #
         ##########################################
         modelVisu = finger.addChild('visu')
-        modelVisu.addObject('MeshSTLLoader', name='loader', filename='/Users/alp/Downloads/$RECYCLE.BIN/$RKJOUDW/SoftRobots_master_for-SOFA-master_Windows/share/sofa/examples/SoftRobots/tutorials/PneunetGripper/details/data/mesh/pneunetCut.stl')
+        modelVisu.addObject('MeshSTLLoader', name='loader', filename='/Users/alp/Desktop/SoftRobots/SOFA_v23.06.00_MacOS/plugins/SoftRobots/share/sofa/examples/SoftRobots/tutorials/PneunetGripper/details/data/mesh/pneunetCut.stl')
         modelVisu.addObject('OglModel', src='@loader', color=[0.7, 0.7, 0.7, 0.6], translation = translations[i], rotation=[360 - angles[i]*180/math.pi, 0, 0])
         modelVisu.addObject('BarycentricMapping')
+
+
+    rootNode.addObject(WholeGripperController(node=rootNode))
 
     return rootNode
