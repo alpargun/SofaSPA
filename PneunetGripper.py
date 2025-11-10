@@ -17,17 +17,6 @@ translations= [translateFinger1,translateFinger2, translateFinger3]
 angles=[0,angle1, angle2]
 
 
-class MyController(Sofa.Core.Controller):
-    def __init__(self, *args, **kwargs):
-        Sofa.Core.Controller.__init__(self, *args, *kwargs)
-                
-    def onEvent(self, params):
-        print("Un-handled handled event received "+str(params))     
-
-    def onSimulationInitDoneEvent(self, params):
-        print("Handled event received: " + str(params))    
-
-
 def createScene(rootNode):
 
     rootNode.addObject('RequiredPlugin', name='Sofa.Component.Engine.Select') # Needed to use components [BoxROI]  
